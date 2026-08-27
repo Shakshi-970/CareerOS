@@ -7,14 +7,14 @@ function getClient(): OpenAI {
   if (!_client) {
     _client = new OpenAI({
       apiKey: process.env.GROQ_API_KEY ?? '',
-      baseURL: process.env.GROQ_BASE_URL ?? 'https://api.groq.com/openai/v1',
+      baseURL: process.env.GROQ_BASE_URL ?? 'https://generativelanguage.googleapis.com/v1beta/openai/',
     })
   }
   return _client
 }
 
 function getModel(): string {
-  return process.env.GROQ_MODEL ?? 'llama-3.1-8b-instant'
+  return process.env.GROQ_MODEL ?? 'gemini-2.0-flash'
 }
 
 // Rate limiting — 1 call per user per feature per 30s (in-memory, Phase 1)
