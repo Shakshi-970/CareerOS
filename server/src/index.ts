@@ -18,6 +18,7 @@ app.use(cors({
     if (!origin) return callback(null, true)
     if (/^http:\/\/localhost:\d+$/.test(origin)) return callback(null, true)
     if (CLIENT_URL && origin === CLIENT_URL) return callback(null, true)
+    if (/\.vercel\.app$/.test(origin ?? '')) return callback(null, true)
     callback(new Error('Not allowed by CORS'))
   }
 }))
