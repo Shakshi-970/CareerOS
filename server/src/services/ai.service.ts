@@ -14,7 +14,7 @@ function getClient(): OpenAI {
 }
 
 function getModel(): string {
-  return process.env.GROQ_MODEL ?? 'llama-3.3-70b-versatile'
+  return process.env.GROQ_MODEL ?? 'llama-3.1-8b-instant'
 }
 
 // Rate limiting — 1 call per user per feature per 30s (in-memory, Phase 1)
