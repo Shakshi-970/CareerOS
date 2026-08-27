@@ -248,7 +248,7 @@ export function JobMatchPage() {
 
       {/* Job list */}
       <div className="space-y-3">
-        {filtered.map((job, i) => (
+        {filtered.map((job) => (
           <JobCard key={job.id} job={job} />
         ))}
       </div>
