@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model UserProfile {
+  id             String   @id @default(cuid())
+  name           String
+  email          String   @unique
+  targetRole     String
+  targetTimeline String
+  location       String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  resumes      Resume[]
+  careerScores CareerScore[]
+  skillGaps    SkillGap[]
+  learningItems LearningItem[]
+  jobMatches   JobMatch[]
+
+  @@map("user_profiles")
+}
+
+model Resume {
+  id        String   @id @default(cuid())
+  userId    String
+  rawText   String
+  atsScore  Float
+  keywords  String[]
+  parsedAt  DateTime @default(now())
+
+  user UserProfile @relation(fields: [userId], references: [id])
+
+  @@map("resumes")
+}
+
+model CareerScore {
+  id                    String   @id @default(cuid())
+  userId                String
+  overallScore          Float
+  resumeQuality         Float
+  skillMatch            Float
+  experienceRelevance   Float
+  digitalPresence       Float
+  certifications        Float
+  calculatedAt          DateTime @default(now())
+
+  user UserProfile @relation(fields: [userId], references: [id])
+
+  @@map("career_scores")
+}
+
+model SkillGap {
+  id          String @id @default(cuid())
+  userId      String
+  skill       String
+  urgency     String
+  closability String
+  status      String @default("open")
+
+  user          UserProfile    @relation(fields: [userId], references: [id])
+  learningItems LearningItem[]
+
+  @@map("skill_gaps")
+}
+
+model LearningItem {
+  id             String  @id @default(cuid())
+  userId         String
+  skillGapId     String
+  platform       String
+  url            String
+  estimatedHours Float
+  timeline       String
+  completed      Boolean @default(false)
+
+  user     UserProfile @relation(fields: [userId], references: [id])
+  skillGap SkillGap    @relation(fields: [skillGapId], references: [id])
+
+  @@map("learning_items")
+}
+
+model JobMatch {
+  id          String   @id @default(cuid())
+  userId      String
+  jobTitle    String
+  company     String
+  matchScore  Float
+  location    String
+  salaryRange String
+  gapDelta    String[]
+  applyUrl    String
+
+  user UserProfile @relation(fields: [userId], references: [id])
+
+  @@map("job_matches")
+}
